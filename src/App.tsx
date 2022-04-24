@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     getMovie('2baf70d1-42bb-4437-b551-e5fed5a87abe');
-  }, []);
+  }, [buttonClicked]);
 
   const getMovie = async (movieId: string) => {
     await axios(`https://ghibliapi.herokuapp.com/films/${movieId}`)
