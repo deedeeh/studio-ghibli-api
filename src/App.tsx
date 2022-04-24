@@ -1,23 +1,31 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
 
   const [ movie, setMovie ] = useState<string>('');
-  const [buttonClicked, setButtonClicked] = useState(false);
+  const [ buttonClicked, setButtonClicked ] = useState(false);
+  const [ errorMsg, setErrorMsg ] = useState<string>('');
 
   useEffect(() => {
     getMovie('2baf70d1-42bb-4437-b551-e5fed5a87abe');
   }, []);
 
   const getMovie = async (movieId: string) => {
-    try {
-      const response = await axios(`https://ghibliapi.herokuapp.com/films/${movieId}`);
+    await axios(`https://ghibliapi.herokuapp.com/films/${movieId}`)
+    .then((response: AxiosResponse) => {
       setMovie(response.data.title);
-    } catch(error) {
-      console.log(error)
-    }
+    })
+    .catch((error: AxiosError) => {
+      if(error.response?.status === 500) {
+        setErrorMsg('Oops… something went wrong, try again 🤕');
+      } else if(error.response?.status === 418) {
+        setErrorMsg(`418 I'm a tea pot 🫖, silly`);
+      } else {
+        setErrorMsg(error.message);
+      }
+    });
   }
 
   const handleOnClick = () => {
@@ -33,6 +41,7 @@ function App() {
         </button>
       </div>}
     {buttonClicked && movie.length > 0 && <h1 className='App-header'>{movie}</h1>}
+    {errorMsg.length > 0 && <p className='App-header' role='alert'>{errorMsg}</p>}
     </div>
   );
 }
