@@ -4,7 +4,7 @@ This repo is created to mock API calls using Mock Service Worker library.
 
 In `App.tsx` there is a button to load movie and when you click it the first movie title from [Studio Ghibli API](https://ghibliapi.herokuapp.com/) will be displayed on screen and the button will be hidden.
 
-In `App.test.tsx` I mocked the API response with the expected movie title to check if the movie loads and displays on screen.
+In `App.test.tsx` I mocked the API response with the expected movie title to check if the movie loads and displays on screen. I also tested for rejected requests with status code `500` and `418` with custom messages.
 
 
 ## Want to try it?
